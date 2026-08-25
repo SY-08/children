@@ -29,8 +29,13 @@ LOCAL_CSV = os.environ.get("LOCAL_CSV")  # ローカル検証用
 OUT_PATH = os.environ.get("OUT_PATH", os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "survey", "data.json"))
 
-# 列インデックス（フォームの列順）
+# 列インデックス（スプレッドシートの列順）
+# A=0 回答日時 / B〜K=Q1〜Q10 / L=11 子どもの人数 / M以降=連絡先・パートナー等（可視化には使わない＝個人情報のため）
 COL_TS, COL_Q1, COL_Q2, COL_Q3, COL_Q4, COL_Q5, COL_Q6, COL_Q7, COL_Q8, COL_Q9, COL_Q10 = range(11)
+COL_CHILDCOUNT = 11
+
+# 「子どもの人数」の有効な選択肢（これ以外の値＝旧データ等は集計しない）
+CHILDCOUNT_VALID = ["1人", "2人", "3人", "4人以上"]
 
 # 表示順（未知ラベルは末尾に回す）
 ORDER_Q1 = [
@@ -145,6 +150,14 @@ def main():
 
     q7 = count_single(valid, COL_Q7)
 
+    # 子どもの人数（有効な選択肢のみ・「いる」方の回答）
+    cc_counts = {}
+    for r in valid:
+        v = (r[COL_CHILDCOUNT] if len(r) > COL_CHILDCOUNT else "").strip()
+        if v in CHILDCOUNT_VALID:
+            cc_counts[v] = cc_counts.get(v, 0) + 1
+    child_count = [{"label": k, "count": cc_counts[k]} for k in CHILDCOUNT_VALID if k in cc_counts]
+
     jst = datetime.timezone(datetime.timedelta(hours=9))
     result = {
         "updated_at": datetime.datetime.now(jst).strftime("%Y-%m-%dT%H:%M:%S%z"),
@@ -157,6 +170,7 @@ def main():
         "q5": by_count(count_multi(valid, COL_Q5)),
         "q6": by_count(count_multi(valid, COL_Q6)),
         "q7": q7,
+        "childCount": child_count,
         "q9": by_count(count_single(valid, COL_Q9)),
         "comments": comments,
     }
