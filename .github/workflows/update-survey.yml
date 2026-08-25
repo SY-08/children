@@ -1,0 +1,52 @@
+name: Update survey data
+
+# 子どものAI利用アンケートの集計(survey/data.json)を毎日1回作り直し、
+# そのまま GitHub Pages に再デプロイする自己完結ワークフロー。
+# 既存の pages.yml と同じ「Actions でサイト全体を配信」方式に合わせているため、
+# リポジトリ設定の変更は不要。追加費用も発生しない。
+
+on:
+  schedule:
+    # 毎日 21:00 UTC = 翌 06:00 JST に実行
+    - cron: '0 21 * * *'
+  workflow_dispatch:        # 手動実行も可能
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Pages デプロイは pages.yml と同じグループにして同時実行を避ける
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Build survey/data.json from spreadsheet
+        run: python3 scripts/build_survey.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact (site + fresh data)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
