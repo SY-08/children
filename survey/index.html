@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>子どものAIとみんなの声</title>
 <meta name="description" content="子どものAI利用に関する保護者アンケート。集まった声をグラフで可視化しています。3分のご協力が、子どもたちが安心してAIと育つ未来をつくります。">
-<meta property="og:title" content="3分で、あなたのお子さんの未来が変わるかもしれない">
-<meta property="og:description" content="子どものAI利用について、親たちの声を集めています。あなたの3分が、子どもたちの安心につながります。">
+<meta property="og:title" content="3分で、これからの子どもたちの未来が変わるかもしれない">
+<meta property="og:description" content="子どものAI活用について、みんなの声を集めています。子どもがいる人も、いない人も。あなたの3分が、これからの社会とあなた自身の未来につながります。">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,8 +109,9 @@
   }
   .hero h1 .hl{ color:var(--warm-deep) }
   .hero .lead{
-    margin:20px auto 0; max-width:30em; font-size:clamp(1rem,2.5vw,1.16rem); color:var(--ink-2);
+    margin:20px auto 0; max-width:32em; font-size:clamp(1rem,2.5vw,1.16rem); color:var(--ink-2);
   }
+  .hero .lead .em{ color:var(--ink); font-family:"Zen Maru Gothic",sans-serif; background:linear-gradient(transparent 62%, var(--warm-soft) 62%); padding:0 .1em }
   .cta-row{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:30px }
   .btn{
     display:inline-flex; align-items:center; gap:10px; font-family:"Zen Maru Gothic",sans-serif;
@@ -140,8 +141,17 @@
   }
   .why .ic{ font-size:1.5rem; width:46px; height:46px; display:grid; place-items:center; border-radius:12px;
     background:var(--blue-soft); margin-bottom:12px }
-  .why h3{ font-size:1.08rem; font-weight:700 }
-  .why p{ margin:8px 0 0; color:var(--ink-2); font-size:.95rem }
+  .why h3{ font-size:1.14rem; font-weight:700 }
+  .why p{ margin:10px 0 0; color:var(--ink-2); font-size:.96rem }
+  .why p b{ color:var(--ink); font-weight:700 }
+  .why.two{ grid-template-columns:1fr 1fr }
+  @media(max-width:680px){ .why.two{ grid-template-columns:1fr } }
+  .why .card .lead-in{ color:var(--ink); font-weight:500; border-left:3px solid var(--warm); padding-left:12px; margin-top:14px }
+  .unify{ text-align:center; margin-top:26px }
+  .unify p{ font-size:clamp(1.05rem,2.6vw,1.28rem); color:var(--ink); font-family:"Zen Maru Gothic",sans-serif; line-height:1.7; max-width:26em; margin:0 auto }
+  .unify p b{ color:var(--warm-deep) }
+  .trust{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:18px }
+  .trust span{ font-size:.84rem; color:var(--ink-2); background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:7px 14px; box-shadow:var(--shadow) }
 
   /* ---------- Stat tiles ---------- */
   .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:12px }
@@ -232,16 +242,16 @@
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span>子どものAI利用に関する保護者アンケート</span>
-    <h1>3分で、<br>あなたのお子さんの<br><span class="hl">未来</span>が変わるかもしれない。</h1>
-    <p class="lead">子どもたちはもう、AIのある世界で育っていきます。<br>「どう付き合わせるか」のルールは、いま作られている最中です。<br>その一票を、あなたの声で。</p>
+    <span class="eyebrow"><span class="dot"></span>子どものAI活用に関する意識アンケート</span>
+    <h1>3分で、これからの<br><span class="hl">子どもたち</span>の未来が<br>変わるかもしれない。</h1>
+    <p class="lead">子どもたちはもう、AIのある世界で育っていきます。その世界のルールは、いま作られている最中です。<br><b class="em">子どもがいる人も、いない人も</b>——これは、あなた自身の未来にもつながる話です。</p>
     <div class="cta-row">
       <a class="btn btn-primary" id="ctaTop" href="#" target="_blank" rel="noopener">
         アンケートに答える <span class="mins">約3分</span>
       </a>
       <a class="btn btn-ghost" href="#voices">みんなの声を見る</a>
     </div>
-    <p class="hero-note">これまでに <b class="num" id="heroCount">–</b> 人の保護者が声を寄せてくれました。<br>あなたの声が、まだ小さなこの輪を大きくします。</p>
+    <p class="hero-note">これまでに <b class="num" id="heroCount">–</b> 人が声を寄せてくれました。<br>あなたの声が、まだ小さなこの輪を大きくします。</p>
   </div>
 </header>
 
@@ -249,25 +259,28 @@
   <!-- WHY -->
   <section class="wrap">
     <div class="sec-head">
-      <div class="kicker">Why now</div>
-      <h2>なぜ、いまあなたの声が必要なのか</h2>
-      <p>正解のない問いだからこそ、一人ひとりの実感が地図になります。</p>
+      <div class="kicker">Why you</div>
+      <h2>子どもがいる人も、いない人も。</h2>
+      <p>これは、あなた自身の未来への投資でもあります。どうか、あなたの立場からの声を聞かせてください。</p>
     </div>
-    <div class="why">
+    <div class="why two">
       <div class="card">
         <div class="ic">🌱</div>
-        <h3>子どもは待ってくれない</h3>
-        <p>AIはすでに宿題にも遊びにも入り込んでいます。ルール作りは「これから」ではなく「いま」進んでいます。</p>
+        <h3>子どもがいる、あなたへ</h3>
+        <p>わが子が初めてAIに触れる日は、もうすぐそこかもしれません。そのとき隣で「これは大丈夫」「ここは気をつけようね」と言えるように——どんなルールがあれば安心か、日々わが子と向き合うあなたの実感が、いちばんの手がかりになります。</p>
+        <p class="lead-in">あなたの3分は、わが子がAIと出会う環境を、少しだけやさしくします。</p>
       </div>
       <div class="card">
         <div class="ic">🤝</div>
-        <h3>専門家だけでは決められない</h3>
-        <p>本当に必要な安心は、日々子どもと向き合う保護者の肌感覚の中にあります。あなたの実感がいちばんの手がかりです。</p>
+        <h3>子どもがいない、あなたへ</h3>
+        <p>「自分には関係ないかな」と思ったかもしれません。でも、AIがつくるこれからの社会を<b>現役世代として支えるのは、いまの子どもたち</b>です。私たちがいつか受け取る年金も、医療も、介護も、次の世代の働きに支えられています。</p>
+        <p class="lead-in">いまの子どもたちがのびのびと力をつけられる環境は、めぐりめぐって、あなた自身の未来を支える力になります。だからこれは、子どもの有無に関係なく、あなたのための投資なのです。</p>
       </div>
-      <div class="card">
-        <div class="ic">🧭</div>
-        <h3>3分が、設計に反映される</h3>
-        <p>集まった声は毎日自動で集計され、子どもが安心して使えるAIの作り方に活かされます。匿名で、たった3分です。</p>
+    </div>
+    <div class="unify">
+      <p>どちらも、たどりつく答えは同じ。<br><b>あなたの3分は、あなたと、これからの社会のための一歩</b>です。</p>
+      <div class="trust">
+        <span>🔒 匿名でOK</span><span>⏱ 約3分</span><span>🆓 無料・登録なしで回答</span>
       </div>
     </div>
   </section>
@@ -312,7 +325,7 @@
   <div class="wrap">
     <div class="up"><span class="live"></span>最終更新：<span id="updated">–</span>（毎日自動更新）</div>
     <div>子どものAIとみんなの声 ／ <a href="https://sy-08.github.io/children/" target="_blank" rel="noopener">children by team AIC</a></div>
-    <p class="fine">本ページは Google フォームに寄せられた匿名回答を集計・可視化したものです。動作確認用のテスト回答は集計から除外しています。個人が特定される情報は収集・掲載していません。</p>
+    <p class="fine">本ページはアンケートに寄せられた匿名回答を集計・可視化したものです。動作確認用のテスト回答は集計から除外しています。個人が特定される情報は本ページに掲載していません。</p>
   </div>
 </footer>
 
@@ -333,8 +346,8 @@ const EMBEDDED_DATA = /*__DATA__*/{
   "comments":["制限ありで構わないので課金制はやめてほしい。"]
 };
 
-/* ★ アンケート回答フォームのURL（デプロイ時に差し込み） */
-const SURVEY_FORM_URL = "__FORM_URL__";
+/* アンケート回答ページ（team AIC の自作アンケート） */
+const SURVEY_FORM_URL = "https://sy-08.github.io/team-aic/survey.html";
 
 let DATA = EMBEDDED_DATA;
 
@@ -433,7 +446,7 @@ function render(){
   }));
 
   /* CTA links */
-  const url = (SURVEY_FORM_URL && SURVEY_FORM_URL.indexOf('__')!==0) ? SURVEY_FORM_URL : null;
+  const url = (SURVEY_FORM_URL && SURVEY_FORM_URL.indexOf('http')===0) ? SURVEY_FORM_URL : null;
   ['ctaTop','ctaBottom'].forEach(id=>{
     const a=document.getElementById(id);
     if(url){ a.href=url; } else { a.href='#voices'; a.removeAttribute('target'); }
