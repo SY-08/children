@@ -402,6 +402,7 @@ function render(){
     <div class="chart"><h3><span class="q">Q2</span>AIを適切に使う力の必要性</h3><div class="desc">単一回答・全${total}人</div><div class="bars" id="c-q2"></div></div>
     <div class="chart"><h3><span class="q">Q3</span>使い始めてよい年齢</h3><div class="desc">単一回答・「いつから？」に定説はまだありません</div><div class="bars" id="c-q3"></div></div>
     <div class="chart"><h3><span class="q">Q7</span>回答者の子育て状況</h3><div class="desc">単一回答</div><div id="c-q7"></div></div>
+    <div class="chart"><h3><span class="q">人数</span>お子さまの人数</h3><div class="desc">お子さまがいる方の回答</div><div class="bars" id="c-cc"></div></div>
     <div class="chart span2"><h3><span class="q">Q4</span>AIに期待できること（メリット）</h3><div class="desc">複数回答・回答者に占める割合</div><div class="bars" id="c-q4"></div><div class="legend-note"><span class="sw" style="background:var(--d-green)"></span>子どもの学びや可能性への期待</div></div>
     <div class="chart span2"><h3><span class="q">Q5</span>感じている不安</h3><div class="desc">複数回答・回答者に占める割合</div><div class="bars" id="c-q5"></div><div class="legend-note"><span class="sw" style="background:var(--d-orange)"></span>ほぼ全員が、期待と同時に不安も抱えています</div></div>
     <div class="chart span2"><h3><span class="q">Q6</span>制限したい内容</h3><div class="desc">複数回答・回答者に占める割合</div><div class="bars" id="c-q6"></div><div class="legend-note"><span class="sw" style="background:var(--d-violet)"></span>子どもを守るために必要と考えられている領域</div></div>
@@ -418,6 +419,12 @@ function render(){
   barChart(document.getElementById('c-q5'), D.q5||[], total, ORANGE);
   barChart(document.getElementById('c-q6'), D.q6||[], total, VIOLET);
   barChart(document.getElementById('c-q9'), D.q9||[], total, BLUE);
+
+  /* 子どもの人数（いる方の回答・データが集まってきたら表示） */
+  const cc = D.childCount||[]; const ccTotal = cc.reduce((a,b)=>a+b.count,0);
+  const ccEl = document.getElementById('c-cc');
+  if(ccTotal>0){ barChart(ccEl, cc, ccTotal, BLUE); }
+  else { ccEl.innerHTML = '<div style="color:var(--ink-3);font-size:.9rem;padding:8px 0">お子さまの人数の回答は、これから集まります。</div>'; }
 
   /* Q7 ring */
   const q7 = D.q7||{}; const withK = q7['いる']||0, without = q7['いない']||0; const t7 = withK+without;
