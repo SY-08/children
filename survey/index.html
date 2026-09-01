@@ -331,8 +331,9 @@
 
 <script>
 /* ============ 埋め込みデータ（フォールバック） ============
-   GitHub Pages 上では data.json を取得して上書きします。
-   毎日の GitHub Actions が data.json を更新するため、公開ページは常に最新になります。 */
+   公開ページでは、非公開スプレッドシートを読む Apps Script ゲートウェイ
+   （集計済みJSONだけを返す窓口）から取得して上書きします。
+   取得に失敗したときは、この埋め込みデータをそのまま表示します。 */
 const EMBEDDED_DATA = /*__DATA__*/{
   "updated_display":"2026年8月25日","total":6,
   "q1":[{"label":"積極的に使ってよいと思う","count":2},{"label":"ルールや大人の見守りがあれば使ってよいと思う","count":4}],
@@ -475,9 +476,24 @@ function render(){
   });
 })();
 
-/* load live data on Pages, fall back to embedded */
-fetch('data.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.total!==undefined){ DATA=d; render(); } }).catch(()=>{});
-render();
+/* ============ ライブデータ取得 ============
+   Apps Script ゲートウェイ（非公開シートから「集計済みデータだけ」を返す窓口）。
+   ・生シートは非公開のまま。個人情報（連絡先など）はこのJSONには含まれません。
+   ・GitHub Actions は使わず、ブラウザ側で定期取得するため無料枠を消費しません。
+   ・取得に失敗した場合は上の埋め込みデータのまま表示します。 */
+const GATEWAY_URL = "https://script.google.com/macros/s/AKfycbzkv3HdwcVdTjjUqHKdhorIW4aCzVXiFLfs9j5zM_gKzmTIm4wogmEhQ-4ibF_AbnI/exec";
+const REFRESH_MS = 60000; /* 60秒ごとに自動更新 */
+
+function loadLive(){
+  fetch(GATEWAY_URL, {cache:'no-store'})
+    .then(r=> r.ok ? r.json() : null)
+    .then(d=>{ if(d && d.total!==undefined && !d.error){ DATA=d; render(); } })
+    .catch(()=>{ /* 失敗時は埋め込みデータのまま */ });
+}
+
+render();                       /* まず埋め込みデータで即表示 */
+loadLive();                     /* 最新データで上書き */
+setInterval(loadLive, REFRESH_MS); /* 以降は定期更新 */
 </script>
 </body>
 </html>
